@@ -178,6 +178,9 @@ jobs:
           # ./src/lang/en.rs
           find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
           find ./src/lang -name "*.rs" -exec sed -i -e 's|Rustdesk|${{ env.appname }}|g' {} \;
+          if [ ! -z "${{ env.compname }}" ]; then
+            find ./src/lang -name "*.rs" -exec sed -i '/powered_by_me/s|"[^"]*"|"Werkt via ${{ env.compname }}"|2' {} \;
+          fi
 
       - name: fix registry if appname has a space
         if: contains(env.appname, ' ')
