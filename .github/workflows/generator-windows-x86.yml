@@ -135,6 +135,20 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
+          if [ ! -z "${{ env.compname }}" ]; then
+            if [ -d ./flutter/lib/l10n/generated ]; then
+              find ./flutter/lib/l10n/generated -name "*.dart" -exec sed -i '/powered_by_me/s|RustDesk|${{ env.compname }}|g' {} \;
+            fi
+            if [ -d ./flutter/lib/l10n ]; then
+              find ./flutter/lib/l10n -name "*.arb" -exec sed -i '/powered_by_me/s|RustDesk|${{ env.compname }}|g' {} \;
+            fi
+            if [ -d ./flutter/lib/src/l10n ]; then
+              find ./flutter/lib/src/l10n -name "*.dart" -exec sed -i '/powered_by_me/s|RustDesk|${{ env.compname }}|g' {} \;
+            fi
+            find ./flutter/lib -maxdepth 3 \( -name "*.dart" -o -name "*.arb" \) -exec sed -i 's|Werkt met RustDesk|Werkt via ${{ env.compname }}|g' {} \;
+            find ./flutter/lib -maxdepth 3 \( -name "*.dart" -o -name "*.arb" \) -exec sed -i 's|powered by RustDesk|via ${{ env.compname }}|g' {} \;
+          fi
+          # overige RustDesk-vermeldingen -> app-naam
           if [ -d ./flutter/lib/l10n/generated ]; then
             find ./flutter/lib/l10n/generated -name "*.dart" -exec sed -i 's|RustDesk|${{ env.appname }}|g' {} \;
           fi
@@ -144,8 +158,6 @@ jobs:
           if [ -d ./flutter/lib/src/l10n ]; then
             find ./flutter/lib/src/l10n -name "*.dart" -exec sed -i 's|RustDesk|${{ env.appname }}|g' {} \;
           fi
-          find ./flutter/lib -maxdepth 3 -name "*.dart" -exec sed -i 's|Werkt met RustDesk|Werkt met ${{ env.appname }}|g' {} \;
-          find ./flutter/lib -maxdepth 3 -name "*.dart" -exec sed -i 's|powered by RustDesk|powered by ${{ env.appname }}|g' {} \;
       - name: change appname to custom
         if: env.appname != 'rustdesk'
         continue-on-error: true
