@@ -212,7 +212,9 @@ jobs:
           if [ ! -z "${{ env.compname }}" ]; then
             find ./src/lang -name "*.rs" -exec sed -i '/powered_by_me/s|RustDesk|${{ env.compname }}|g' {} \;
           fi
-          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|g' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|Rustdesk|${{ env.appname }}|g' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|rustdesk.com|${{ env.urlLink }}|g' {} \;
           sed -i -e 's|RustDesk|${{ env.appname }}|' ./res/msi/Package/License.rtf
 
       - name: fix registry if appname has a space

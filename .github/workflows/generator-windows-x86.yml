@@ -177,6 +177,7 @@ jobs:
           sed -i -e 's|const APP_PREFIX: \&str = "rustdesk";|const APP_PREFIX: \&str = "${{ env.appname }}";|' ./libs/portable/src/main.rs
           # ./src/lang/en.rs
           find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|Rustdesk|${{ env.appname }}|g' {} \;
 
       - name: fix registry if appname has a space
         if: contains(env.appname, ' ')
