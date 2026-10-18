@@ -283,6 +283,7 @@ jobs:
           sed -i -e 's|OriginalFilename = "rustdesk.exe"|OriginalFilename = "${{ env.appname }}.exe"|' ./libs/portable/Cargo.toml
           sed -i -e 's|const APP_PREFIX: \&str = "rustdesk";|const APP_PREFIX: \&str = "${{ env.appname }}";|' ./libs/portable/src/main.rs
           find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|Rustdesk|${{ env.appname }}|g' {} \;
           sed -i -e '/-p tmpdeb\/usr\/lib\/rustdesk/d' ./build.py
 
       - name: change company name
@@ -941,6 +942,7 @@ jobs:
           sed -i -e 's|OriginalFilename = "rustdesk.exe"|OriginalFilename = "${{ env.appname }}.exe"|' ./libs/portable/Cargo.toml
           sed -i -e 's|const APP_PREFIX: \&str = "rustdesk";|const APP_PREFIX: \&str = "${{ env.appname }}";|' ./libs/portable/src/main.rs
           find ./src/lang -name "*.rs" -exec sed -i -e 's|RustDesk|${{ env.appname }}|' {} \;
+          find ./src/lang -name "*.rs" -exec sed -i -e 's|Rustdesk|${{ env.appname }}|g' {} \;
           sed -i -e '/-p tmpdeb\/usr\/lib\/rustdesk/d' ./build.py
 
       - name: change company name
