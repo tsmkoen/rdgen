@@ -465,7 +465,15 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
-          sed -i -e 's|com.carriez.flutter_hbb|${{ env.androidappid }}|' ./flutter/android/app/build.gradle
+          # Only rewrite applicationId. The namespace must keep matching the
+          # Kotlin source package (com.carriez.flutter_hbb); rewriting it too
+          # breaks R-class resolution (Unresolved reference 'R') on 1.5.x.
+          sed -i -e 's|applicationId "com.carriez.flutter_hbb"|applicationId "${{ env.androidappid }}"|' ./flutter/android/app/build.gradle
+          # Fallback for older tags (<= 1.4.x) without a namespace line,
+          # where applicationId was the only occurrence.
+          if ! grep -q 'applicationId "${{ env.androidappid }}"' ./flutter/android/app/build.gradle; then
+            sed -i -e 's|com.carriez.flutter_hbb|${{ env.androidappid }}|' ./flutter/android/app/build.gradle
+          fi
 
       - name: change download link to custom
         if: env.downloadLink != 'https://rustdesk.com/download'
